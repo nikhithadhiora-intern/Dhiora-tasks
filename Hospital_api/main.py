@@ -8,7 +8,10 @@ from routers import (
     beds,
     inventory,
     billing,
-    laboratory
+    laboratory,
+    staffleave,
+    telemedicine,
+    erx
 )
 
 # create tables
@@ -25,3 +28,6 @@ app.include_router(beds.router)
 app.include_router(inventory.router)
 app.include_router(billing.router)
 app.include_router(laboratory.router)
+app.include_router(staffleave.router)
+app.include_router(telemedicine.router)
+app.include_router(erx.router)

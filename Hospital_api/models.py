@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Date,Text, ForeignKey
 from database import Base
 
 class Patient(Base):
@@ -36,6 +36,20 @@ class Staff(Base):
     shift = Column(String)
     contact = Column(String)
 
+
+
+
+class StaffLeave(Base):
+    __tablename__ = "staff_leaves"
+
+    id = Column(Integer, primary_key=True, index=True)
+    staff_id = Column(Integer, ForeignKey("staff.id", ondelete="CASCADE"))
+    leave_date = Column(Date, nullable=False)
+    reason = Column(String)
+    status = Column(String, default="pending")
+
+
+
 class Bed(Base):
     __tablename__ = "beds"
     id = Column(Integer, primary_key=True, index=True)
@@ -65,4 +79,28 @@ class LabTest(Base):
     patient_id = Column(Integer)
     test_name = Column(String)
     result = Column(String, nullable=True)
+
+class Telemedicine(Base):
+    __tablename__ = "telemedicine"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, nullable=False)
+    doctor_id = Column(Integer, nullable=False)
+    appointment_date = Column(Date, nullable=False)
+    meeting_link = Column(Text, nullable=False)
+    status = Column(String, default="scheduled")
+    notes = Column(Text)
+class ERX(Base):
+    __tablename__ = "erx"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, nullable=False)
+    doctor_id = Column(Integer, nullable=False)
+    telemedicine_id = Column(Integer, nullable=True)
+    prescription_date = Column(Date, nullable=False)
+    medicines = Column(Text, nullable=False)
+    dosage = Column(Text, nullable=False)
+    instructions = Column(Text)
+
+
 

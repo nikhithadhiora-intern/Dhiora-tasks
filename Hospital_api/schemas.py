@@ -64,6 +64,36 @@ class Staff(StaffBase):
     id: int
     class Config:
         from_attributes = True
+from pydantic import BaseModel
+from datetime import date
+
+# ---------- STAFF ----------
+class StaffCreate(BaseModel):
+    name: str
+    role: str
+    shift: str
+    contact: str
+
+class StaffResponse(StaffCreate):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+# ---------- LEAVES ----------
+class StaffLeaveCreate(BaseModel):
+    staff_id: int
+    leave_date: date
+    reason: str | None = None
+
+class StaffLeaveResponse(StaffLeaveCreate):
+    id: int
+    status: str
+
+    class Config:
+        from_attributes = True
+
 
 
 class BedBase(BaseModel):
@@ -115,3 +145,43 @@ class LabTest(LabTestBase):
     id: int
     class Config:
         orm_mode = True
+
+from pydantic import BaseModel
+from datetime import date
+from typing import Optional
+
+class TelemedicineBase(BaseModel):
+    patient_id: int
+    doctor_id: int
+    appointment_date: date
+    meeting_link: str
+    status: Optional[str] = "scheduled"
+    notes: Optional[str] = None
+
+class TelemedicineCreate(TelemedicineBase):
+    pass
+
+class TelemedicineResponse(TelemedicineBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+        
+class ERXBase(BaseModel):
+    patient_id: int
+    doctor_id: int
+    telemedicine_id: Optional[int] = None
+    prescription_date: date
+    medicines: str
+    dosage: str
+    instructions: Optional[str] = None
+
+class ERXCreate(ERXBase):
+    pass
+
+class ERXResponse(ERXBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
